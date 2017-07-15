@@ -44,6 +44,14 @@ ui <- fluidPage(theme = shinytheme("united"),
                            step = 1000,
                            width = 200),
               
+              numericInput("downpayment",
+                           "Downpayment ($)",
+                           value = 0,
+                           min = 0,
+                           max = 100000,
+                           step = 1000,
+                           width = 200),
+              
               numericInput("term",
                            "Loan Term (months)",
                            value = 60,
@@ -318,6 +326,7 @@ server <- function(input, output, session) {
                            
                    }
            } 
+           
            if (input$car == "2014 Camry Hybrid") {
                    updateNumericInput(session, "price", value = 17640)
                    updateNumericInput(session, "fuelEconomy", value = 6.03)
@@ -403,16 +412,17 @@ server <- function(input, output, session) {
            
            
    })
+        
    output$MonthlyPay <- renderText({ 
-           monthly <- PMT(input$rate/(100*12), input$term, input$price)
+           monthly <- PMT(input$rate/(100*12), input$term, input$price - input$downpayment)
    })
   
    calcLoan <- reactive ({
            
-           monthly <- PMT(input$rate/(100*12), input$term, input$price)
+           monthly <- PMT(input$rate/(100*12), input$term, input$price - input$downpayment)
            payment <- data.frame(matrix(NA, nrow = input$term, ncol = 6))
            colnames(payment) <- c("Month", "Starting balance", "Payment", "Applied to Interest", "Applied to Principal", "Remaining Loan Balance")
-           starting_balance <- input$price
+           starting_balance <- input$price - input$downpayment
 
            for (i in 1:input$term) {
                    
@@ -450,7 +460,7 @@ server <- function(input, output, session) {
            monthsUsed <- ((input$life - input$odometer) / input$annual) * 12
            insuranceCost <- input$insurance * monthsUsed
            
-           totalCost <- (gasCost +  (input$price - borrowCost())) + calcRepair()$repairCost + insuranceCost
+           totalCost <- (gasCost +  (input$price - input$downpayment - borrowCost())) + calcRepair()$repairCost + insuranceCost
            kmCost <- totalCost / (input$life-input$odometer)
            annualCost <- totalCost / (input$life / input$annual)
 
