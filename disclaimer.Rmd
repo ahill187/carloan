@@ -1,5 +1,5 @@
 ---
-title: "disclaimer"
+
 output:
   pdf_document: default
   html_document: default
@@ -9,6 +9,5 @@ output:
 Copyright © 2017 Shefa Analytics. All Rights Reserved. 
 
 For Illustrative Purposes Only. 
-
 
 This caluclator is published by Shefa Analytics (Shefa) under GPL 3 License and comes with no warranties whatsoever. Use at your own risk, and be sure to verify all the provided info with, as they may be out of date, or include errors and miscalculations. In no event shall Shefa s be liable to any party for direct, indirect, special, incidental, or consequential damages, including lost profits, arising out of the use of this software and its documentation, even if Shefa has been advised of the possibility of such damage. Shefa specifically disclaims any warranties, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose and accuracy of the provided information. The software and accompanying documentation, if any, provided hereunder is provided "As is". Shefa has no obligation to provide maintenance, support, updates, enhancements, or modifications.

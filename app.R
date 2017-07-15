@@ -138,7 +138,6 @@ ui <- fluidPage(theme = shinytheme("united"),
 
                 ),
                 tabPanel("Loan Table",  tableOutput("PaymentTable")),
-                
                 tabPanel("Methodology", includeMarkdown("method.Rmd")),
                 tabPanel("Disclaimer",  includeMarkdown("disclaimer.Rmd"))
                 

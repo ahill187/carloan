@@ -1,5 +1,4 @@
 ---
-title: "Method"
 output: html_document
 ---
 
@@ -7,11 +6,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Methodology
-
-* Maintenace Costs:
-
-
-* Fuel Costs:
+## Methodology Notes
+* As you chose a vehicle, certain input are prepopulated based on Canadian prices in July 2017. All present and future costs are reported as 2017 Canadian dollar equivalents. Prepopulated prices include BC taxes and manufacturer rebates at the time of development.  
+* Maintenace & repair costs are estimated at 1 ¢/km up to 45,000 km, 3.5 ¢/km from 45,000 km to 100,000 km, and 7 ¢/km thereafter, in accordance with industry rules of thumb and reported average annaul costs. See <http://www.autofile.ca/en-ca/auto-news/canadians-spend-about-800year-on-vehicle-maintenance> and <http://www.brighthub.com/money/personal-finance/articles/32142.aspx>. Note that differences between makes and models on estimated maintenance and repair costs have not been accounted for. 
+* Fuel Efficency Values are based on average fuel economies reported by the U.S. Environmental Protection Agency, available from <https://www.fueleconomy.gov/>
 
 
