@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(shinythemes)
 PMT <- function(rate, nper,pv, fv=0, type=0){
         pmt = ifelse(rate!=0,
                      (rate*(fv+pv*(1+ rate)^nper))/((1+rate*type)*(1-(1+ rate)^nper)),
@@ -17,7 +18,7 @@ PMT <- function(rate, nper,pv, fv=0, type=0){
         return(pmt)
 }
 # Define UI for application that draws a histogram
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("united"),
    
    # Application title
    titlePanel("Car Purchase Calculator: Should I buy new or used?"),
@@ -27,11 +28,11 @@ ui <- fluidPage(
    
    sidebarLayout(
       sidebarPanel(
-              selectInput("car", "Choose a car to buy:",
+              selectInput("car", "Choose a car:",
                           list(`Honda` = c("Civic LX", "Civic LX Honda Sensing", "Civic EX", "Civic EX-t", "Civic Touring", "2014 Civic LX"),
                                `Toyota` = c("Corolla LE", "Corolla LE ECO", "Prius", "2014 Camry Hybrid"),
                                `Hyundai` = c("Elantra SE", "Accent LE"),
-                               `Custom`  = c("New", "Used")),
+                               `Custom Vehicle`  = c("New", "Used")),
                           selected = 'Civic EX-t'
               ),
               numericInput("price",
@@ -40,7 +41,7 @@ ui <- fluidPage(
                            min = 0,
                            max = 1000000,
                            step = 1000,
-                           width = 100),
+                           width = 200),
               
               numericInput("term",
                            "Loan Term (months)",
@@ -48,7 +49,7 @@ ui <- fluidPage(
                            min = 0,
                            max = 84,
                            step = 12,
-                           width = 100),
+                           width = 200),
 
               numericInput("rate",
                           "Interest Rate: (%, Annual)",
@@ -56,7 +57,7 @@ ui <- fluidPage(
                           max = 10,
                           step = 0.01,
                           value = 0.99,
-                          width = 100),
+                          width = 200),
               
               numericInput("odometer",
                            "Odometer (km)",
@@ -64,7 +65,7 @@ ui <- fluidPage(
                            min = 0,
                            max = 500000,
                            step = 10000,
-                           width = 100),
+                           width = 200),
               
               numericInput("life",
                            "Lifetime km",
@@ -72,7 +73,7 @@ ui <- fluidPage(
                            min = 100000,
                            max = 500000,
                            step = 10000,
-                           width = 100),
+                           width = 200),
               
               numericInput("annual",
                            "Annual km",
@@ -80,31 +81,31 @@ ui <- fluidPage(
                            min = 0,
                            max = 200000,
                            step = 10000,
-                           width = 100),    
+                           width = 200),    
               
               numericInput("fuelEconomy",
-                           "Fuel Economy (L per 100 km)",
+                           "Fuel Economy (L/100 km)",
                            value = 6.53,
                            min = 0,
                            max = 25,
                            step = 0.1,
-                           width = 100),
+                           width = 200),
               
               numericInput("gasPrice",
-                           "Gas ($ per L)",
+                           "Gas ($/L)",
                            value = 1.31,
                            min = 0,
                            max = 5,
                            step = 0.1,
-                           width = 100),
+                           width = 200),
               
               numericInput("insurance",
                            "Insurance (monthly)",
-                           value = 100,
+                           value = 200,
                            min = 0,
-                           max = 300,
+                           max = 500,
                            step = 10,
-                           width = 100)
+                           width = 200)
       
       ),
       
@@ -132,8 +133,10 @@ ui <- fluidPage(
                                         
 
                 ),
-                tabPanel("Loan Table",  tableOutput("PaymentTable"))
+                tabPanel("Loan Table",  tableOutput("PaymentTable")),
                 
+                tabPanel("Methodology", includeMarkdown("method.Rmd")),
+                tabPanel("Disclaimer",  includeMarkdown("disclaimer.Rmd"))
                 
               )
       )
