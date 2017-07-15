@@ -112,12 +112,11 @@ ui <- fluidPage(
 server <- function(input, output) {
 
    output$MonthlyPay <- renderText({ 
-           message <- "Monthly Payment is: "
            monthly <- PMT(input$rate/(100*12), input$term, input$value)
    })
   
-   output$PaymentTable <- renderTable({
-         
+   calcLoan <- reactive ({
+           
            monthly <- PMT(input$rate/(100*12), input$term, input$value)
            payment <- data.frame(matrix(NA, nrow = input$term, ncol = 6))
            colnames(payment) <- c("Month", "Starting balance", "Payment", "Applied to Interest", "Applied to Principal", "Remaining Loan Balance")
@@ -132,10 +131,18 @@ server <- function(input, output) {
                    payment[i,6] <- payment[i,2] +  payment[i,5]
                    
                    starting_balance <- payment[i,6]
-           }
-           
-           payment
-           
+           }  
+        list (payment = payment)           
+   })
+   output$PaymentTable <- renderTable({
+           calcLoan()$payment
+   })
+   
+   output$BorrowingCost <- renderText({
+           BorrowingCost()  
+   })
+   output$TotalCost <- renderText({
+          
    })
 }
 
