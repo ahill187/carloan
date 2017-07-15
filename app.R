@@ -29,12 +29,12 @@ ui <- fluidPage(
       sidebarPanel(
               selectInput("car", "Choose a car to buy:",
                           list(`Honda` = c("Civic LX", "Civic LX Honda Sensing", "Civic EX", "Civic EX-t", "Civic Touring"),
-                               `Toyota` = c("Corolla LE", "Corolla LE ECO"),
+                               `Toyota` = c("Corolla LE", "Corolla LE ECO", "Prius"),
                                `Hyundai` = c("Elantra SE", "Accent LE"),
                                `Custom`  = c("New", "Used")),
                           selected = 'Civic EX-t'
               ),
-              numericInput("value",
+              numericInput("price",
                            "Loan Value ($)",
                            value = 29535,
                            min = 0,
@@ -49,7 +49,7 @@ ui <- fluidPage(
                            max = 84,
                            step = 12,
                            width = 100),
-              
+
               numericInput("rate",
                           "Interest Rate: (%, Annual)",
                           min = 0,
@@ -127,18 +127,154 @@ ui <- fluidPage(
 
 )
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
 
+   observe({  
+           if (input$car == "Civic LX") {
+                   updateNumericInput(session, "price", value = 24383.17)
+                   updateNumericInput(session, "fuelEconomy", value = 6.92)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 1.49)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 1.99)        
+                   }
+        
+           }
+           
+           if (input$car == "Civic LX Honda Sensing") {
+                   updateNumericInput(session, "price", value = 25503)
+                   updateNumericInput(session, "fuelEconomy", value = 6.92)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 1.49)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 1.99)        
+                   }
+                   
+           }
+           if (input$car == "Civic EX") {
+                   updateNumericInput(session, "price", value = 27967)
+                   updateNumericInput(session, "fuelEconomy", value = 6.92)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 1.49)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 1.99)        
+                   }
+                   
+           }
+           if (input$car == "Civic EX-t") {
+                   updateNumericInput(session, "price", value = 29535)
+                   updateNumericInput(session, "fuelEconomy", value = 6.53)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 1.49)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 1.99)        
+                   }
+                   
+           }
+           if (input$car == "Civic Touring") {
+                   updateNumericInput(session, "price", value = 31999)
+                   updateNumericInput(session, "fuelEconomy", value = 6.53)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 1.49)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 1.99)        
+                   }
+                   
+           }
+           
+           if (input$car == "Corolla LE") {
+                   updateNumericInput(session, "price", value = 24122)
+                   updateNumericInput(session, "fuelEconomy", value = 7.59)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.49)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+           }
+           
+           if (input$car == "Corolla LE ECO") {
+                   updateNumericInput(session, "price", value = 24682)
+                   updateNumericInput(session, "fuelEconomy", value = 6.92)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.49)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+           }
+           
+           if (input$car == "Prius") {)
+                   updateNumericInput(session, "price", value = 36377)
+                   updateNumericInput(session, "fuelEconomy", value = 4.2)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.49)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
+           }
+           
+           if (input$car == "Elantra SE") {
+                   updateNumericInput(session, "rate", value = 1.99)
+                   updateNumericInput(session, "term", value = 84)
+                   updateNumericInput(session, "price", value = 22374)
+                   updateNumericInput(session, "fuelEconomy", value = 7.13)
+           }
+           
+           if (input$car == "Accent LE") {
+                   updateNumericInput(session, "rate", value = 0)
+                   updateNumericInput(session, "term", value = 84)
+                   updateNumericInput(session, "price", value = 19632)
+                   updateNumericInput(session, "fuelEconomy", value = 7.59)
+           }
+           
+
+           if (input$car == "Used") {
+             updateNumericInput(session, "rate", value = 6)
+           }
+           
+           
+   })
    output$MonthlyPay <- renderText({ 
-           monthly <- PMT(input$rate/(100*12), input$term, input$value)
+           monthly <- PMT(input$rate/(100*12), input$term, input$price)
    })
   
    calcLoan <- reactive ({
            
-           monthly <- PMT(input$rate/(100*12), input$term, input$value)
+           monthly <- PMT(input$rate/(100*12), input$term, input$price)
            payment <- data.frame(matrix(NA, nrow = input$term, ncol = 6))
            colnames(payment) <- c("Month", "Starting balance", "Payment", "Applied to Interest", "Applied to Principal", "Remaining Loan Balance")
-           starting_balance <- input$value
+           starting_balance <- input$price
            for (i in 1:input$term) {
                    
                    payment[i,1] <- i
@@ -159,7 +295,7 @@ server <- function(input, output) {
    
    costPer <- reactive ({
            gasCost <- ((input$life-input$odometer) / 100 * input$fuelEconomy * input$gasPrice)  
-           totalCost <- (gasCost +  (input$value - borrowCost())) 
+           totalCost <- (gasCost +  (input$price - borrowCost())) 
            kmCost <- totalCost / (input$life-input$odometer)
            annualCost <- totalCost / (input$life / input$annual)
            
