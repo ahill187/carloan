@@ -29,7 +29,7 @@ ui <- fluidPage(
       sidebarPanel(
               selectInput("car", "Choose a car to buy:",
                           list(`Honda` = c("Civic LX", "Civic LX Honda Sensing", "Civic EX", "Civic EX-t", "Civic Touring"),
-                               `Toyota` = c("Corolla LE", "Corolla LE ECO", "Prius"),
+                               `Toyota` = c("Corolla LE", "Corolla LE ECO", "Prius", "2014 Camry Hybrid"),
                                `Hyundai` = c("Elantra SE", "Accent LE"),
                                `Custom`  = c("New", "Used")),
                           selected = 'Civic EX-t'
@@ -241,6 +241,22 @@ server <- function(input, output, session) {
                    }
                    if (input$term == 84) {
                            updateNumericInput(session, "rate", value = 2.99)        
+                   }
+           }
+           
+           if (input$car == "2014 Camry Hybrid") {
+                   updateNumericInput(session, "price", value = 17640)
+                   updateNumericInput(session, "fuelEconomy", value = 6.03)
+                   updateNumericInput(session, "odometer", value = 26000)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 2.99)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 5.24)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 6)     
+                         
                    }
            }
            
