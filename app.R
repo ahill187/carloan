@@ -245,22 +245,38 @@ server <- function(input, output, session) {
            }
            
            if (input$car == "Elantra SE") {
-                   updateNumericInput(session, "rate", value = 1.99)
-                   updateNumericInput(session, "term", value = 84)
-                   updateNumericInput(session, "price", value = 22374)
+                   updateNumericInput(session, "price", value = 27248.48)
                    updateNumericInput(session, "fuelEconomy", value = 7.13)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 0)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 0.99)        
+                   }
            }
            
            if (input$car == "Accent LE") {
-                   updateNumericInput(session, "rate", value = 0)
-                   updateNumericInput(session, "term", value = 84)
-                   updateNumericInput(session, "price", value = 19632)
+                   updateNumericInput(session, "price", value = 19632.48)
                    updateNumericInput(session, "fuelEconomy", value = 7.59)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 0)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 0)        
+                   }
            }
            
 
            if (input$car == "Used") {
              updateNumericInput(session, "rate", value = 6)
+             updateNumericInput(session, "odometer", value = 50000)
+             updateNumericInput(session, "fuelEconomy", value = 8)
            }
            
            
