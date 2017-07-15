@@ -30,13 +30,14 @@ ui <- fluidPage(theme = shinytheme("united"),
       sidebarPanel(
               selectInput("car", "Choose a car:",
                           list(`Honda` = c("2017 Civic LX", "2017 Civic LX Honda Sensing", "2017 Civic EX", "2017 Civic EX-t", "2017 Civic Touring", "2014 Civic LX"),
-                               `Toyota` = c("2017 Corolla LE", "2017 Corolla LE ECO", "Prius", "2014 Camry Hybrid"),
-                               `Hyundai` = c("Elantra SE", "Accent LE"),
+                               `Toyota` = c("2017 Corolla LE", "2017 Corolla LE ECO", "2017 Prius", "2017 Camry LE", "2017 Camry Hybrid LE", "2014 Camry Hybrid"),
+                               `Nissan` = c("2017 Sentra SL", "2017 Altima 2.5 SV"),
+                               `Hyundai` = c("2017 Elantra SE", "2017 Accent LE"),
                                `Custom Vehicle`  = c("New", "Used")),
                           selected = '2017 Civic EX-t'
               ),
               numericInput("price",
-                           "Loan Value ($)",
+                           "Vehicle Price ($)",
                            value = 29535,
                            min = 0,
                            max = 1000000,
@@ -271,7 +272,7 @@ server <- function(input, output, session) {
                    }
            }
            
-           if (input$car == "Prius") {
+           if (input$car == "2017 Prius") {
                    updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 36377)
                    updateNumericInput(session, "fuelEconomy", value = 4.2)
@@ -286,6 +287,37 @@ server <- function(input, output, session) {
                    }
            }
            
+           if (input$car == "2017 Camry LE") {
+                   updateNumericInput(session, "price", value = 28751)
+                   updateNumericInput(session, "fuelEconomy", value = 8.71)
+                   updateNumericInput(session, "odometer", value = 0)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.49)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 0.49)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 0.99)     
+                           
+                   }
+           } 
+           
+           if (input$car == "2017 Camry Hybrid LE") {
+                   updateNumericInput(session, "price", value = 37068.80)
+                   updateNumericInput(session, "fuelEconomy", value = 5.88)
+                   updateNumericInput(session, "odometer", value = 0)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0.49)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 0.49)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 0.99)     
+                           
+                   }
+           } 
            if (input$car == "2014 Camry Hybrid") {
                    updateNumericInput(session, "price", value = 17640)
                    updateNumericInput(session, "fuelEconomy", value = 6.03)
@@ -301,8 +333,38 @@ server <- function(input, output, session) {
                          
                    }
            }
+
+           if (input$car == "2017 Sentra SL") {
+                   updateNumericInput(session, "odometer", value = 0)
+                   updateNumericInput(session, "price", value = 29045)
+                   updateNumericInput(session, "fuelEconomy", value = 7.35)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 0)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 0.49)        
+                   }
+           }
            
-           if (input$car == "Elantra SE") {
+           if (input$car == "2017 Altima 2.5 SV") {
+                   updateNumericInput(session, "odometer", value = 0)
+                   updateNumericInput(session, "price", value = 32800)
+                   updateNumericInput(session, "fuelEconomy", value = 7.59)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 0)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 0)        
+                   }
+                   if (input$term == 84) {
+                           updateNumericInput(session, "rate", value = 0.49)        
+                   }
+           }
+
+           if (input$car == "2017 Elantra SE") {
                    updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 27248.48)
                    updateNumericInput(session, "fuelEconomy", value = 7.13)
@@ -317,7 +379,7 @@ server <- function(input, output, session) {
                    }
            }
            
-           if (input$car == "Accent LE") {
+           if (input$car == "2017 Accent LE") {
                    updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 19632.48)
                    updateNumericInput(session, "fuelEconomy", value = 7.59)
