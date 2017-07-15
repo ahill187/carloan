@@ -29,11 +29,11 @@ ui <- fluidPage(theme = shinytheme("united"),
    sidebarLayout(
       sidebarPanel(
               selectInput("car", "Choose a car:",
-                          list(`Honda` = c("Civic LX", "Civic LX Honda Sensing", "Civic EX", "Civic EX-t", "Civic Touring", "2014 Civic LX"),
-                               `Toyota` = c("Corolla LE", "Corolla LE ECO", "Prius", "2014 Camry Hybrid"),
+                          list(`Honda` = c("2017 Civic LX", "2017 Civic LX Honda Sensing", "2017 Civic EX", "2017 Civic EX-t", "2017 Civic Touring", "2014 Civic LX"),
+                               `Toyota` = c("2017 Corolla LE", "2017 Corolla LE ECO", "Prius", "2014 Camry Hybrid"),
                                `Hyundai` = c("Elantra SE", "Accent LE"),
                                `Custom Vehicle`  = c("New", "Used")),
-                          selected = 'Civic EX-t'
+                          selected = '2017 Civic EX-t'
               ),
               numericInput("price",
                            "Loan Value ($)",
@@ -105,7 +105,11 @@ ui <- fluidPage(theme = shinytheme("united"),
                            min = 0,
                            max = 500,
                            step = 10,
-                           width = 200)
+                           width = 200),
+              
+              checkboxInput("includeRepair",
+                            "Include Maintenance Costs",
+                            value = TRUE)
       
       ),
       
@@ -147,7 +151,8 @@ ui <- fluidPage(theme = shinytheme("united"),
 server <- function(input, output, session) {
 
    observe({  
-           if (input$car == "Civic LX") {
+           if (input$car == "2017 Civic LX") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 24383.17)
                    updateNumericInput(session, "fuelEconomy", value = 6.92)
                    if (input$term == 60) {
@@ -162,7 +167,8 @@ server <- function(input, output, session) {
         
            }
            
-           if (input$car == "Civic LX Honda Sensing") {
+           if (input$car == "2017 Civic LX Honda Sensing") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 25503)
                    updateNumericInput(session, "fuelEconomy", value = 6.92)
                    if (input$term == 60) {
@@ -176,7 +182,8 @@ server <- function(input, output, session) {
                    }
                    
            }
-           if (input$car == "Civic EX") {
+           if (input$car == "2017 Civic EX") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 27967)
                    updateNumericInput(session, "fuelEconomy", value = 6.92)
                    if (input$term == 60) {
@@ -190,7 +197,8 @@ server <- function(input, output, session) {
                    }
                    
            }
-           if (input$car == "Civic EX-t") {
+           if (input$car == "2017 Civic EX-t") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 29535)
                    updateNumericInput(session, "fuelEconomy", value = 6.53)
                    if (input$term == 60) {
@@ -205,7 +213,8 @@ server <- function(input, output, session) {
                    
            }
            
-           if (input$car == "Civic Touring") {
+           if (input$car == "2017 Civic Touring") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 31999)
                    updateNumericInput(session, "fuelEconomy", value = 6.53)
                    if (input$term == 60) {
@@ -222,6 +231,7 @@ server <- function(input, output, session) {
            
            if (input$car == "2014 Civic LX") {
                    updateNumericInput(session, "price", value = 17920)
+                   updateNumericInput(session, "odometer", value = 63000)
                    updateNumericInput(session, "fuelEconomy", value = 7.35)
                    if (input$term == 60) {
                            updateNumericInput(session, "rate", value = 5)        
@@ -232,7 +242,8 @@ server <- function(input, output, session) {
 
            }
            
-           if (input$car == "Corolla LE") {
+           if (input$car == "2017 Corolla LE") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 24122)
                    updateNumericInput(session, "fuelEconomy", value = 7.59)
                    if (input$term == 60) {
@@ -246,7 +257,8 @@ server <- function(input, output, session) {
                    }
            }
            
-           if (input$car == "Corolla LE ECO") {
+           if (input$car == "2017 Corolla LE ECO") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 24682)
                    updateNumericInput(session, "fuelEconomy", value = 6.92)
                    if (input$term == 60) {
@@ -261,6 +273,7 @@ server <- function(input, output, session) {
            }
            
            if (input$car == "Prius") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 36377)
                    updateNumericInput(session, "fuelEconomy", value = 4.2)
                    if (input$term == 60) {
@@ -291,6 +304,7 @@ server <- function(input, output, session) {
            }
            
            if (input$car == "Elantra SE") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 27248.48)
                    updateNumericInput(session, "fuelEconomy", value = 7.13)
                    if (input$term == 60) {
@@ -305,6 +319,7 @@ server <- function(input, output, session) {
            }
            
            if (input$car == "Accent LE") {
+                   updateNumericInput(session, "odometer", value = 0)
                    updateNumericInput(session, "price", value = 19632.48)
                    updateNumericInput(session, "fuelEconomy", value = 7.59)
                    if (input$term == 60) {
@@ -361,7 +376,7 @@ server <- function(input, output, session) {
            } else if (odometer <= 45000) {
                    repairCost <- (45000 - odometer) * 0.01 + (100000-45000) * 0.035 + (input$life - 100000) * 0.07
            }
-           list (repairCost = repairCost)
+           list (repairCost = (input$includeRepair == 'TRUE')*repairCost)
    })    
    
 
