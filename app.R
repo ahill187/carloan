@@ -27,9 +27,16 @@ ui <- fluidPage(
    
    sidebarLayout(
       sidebarPanel(
+              selectInput("car", "Choose a car to buy:",
+                          list(`Honda` = c("Civic LX", "Civic LX Honda Sensing", "Civic EX", "Civic EX-t", "Civic Touring"),
+                               `Toyota` = c("Corolla LE", "Corolla LE ECO"),
+                               `Hyundai` = c("Elantra SE", "Accent LE"),
+                               `Custom`  = c("New", "Used")),
+                          selected = 'Civic EX-t'
+              ),
               numericInput("value",
                            "Loan Value ($)",
-                           value = 30000,
+                           value = 29535,
                            min = 0,
                            max = 1000000,
                            step = 1000,
@@ -77,7 +84,7 @@ ui <- fluidPage(
               
               numericInput("fuelEconomy",
                            "Fuel Economy (L per 100 km)",
-                           value = 7,
+                           value = 6.53,
                            min = 0,
                            max = 25,
                            step = 0.1,
@@ -105,10 +112,11 @@ ui <- fluidPage(
                                     verbatimTextOutput("TotalCostExFuel"),
                                     tags$p("Total Ownership Cost:"),
                                     verbatimTextOutput("TotalCostInFuel"),
+                                    tags$p("Annual Ownership Cost"),
+                                    verbatimTextOutput("AnnualCost"),
                                     tags$p("Cost per km (inc. fuel):"),
-                                    verbatimTextOutput("PerKMCost"),
-                                    tags$p("Annual Cost: (inc. fuel)"),
-                                    verbatimTextOutput("AnnualCost")
+                                    verbatimTextOutput("PerKMCost")
+
                 ),
                 tabPanel("Loan Table",  tableOutput("PaymentTable"))
                 
