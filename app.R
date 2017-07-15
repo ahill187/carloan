@@ -59,7 +59,7 @@ ui <- fluidPage(
                            step = 10000,
                            width = 100),
               
-              numericInput("Life",
+              numericInput("life",
                            "Lifetime km",
                            value = 200000,
                            min = 100000,
@@ -67,7 +67,15 @@ ui <- fluidPage(
                            step = 10000,
                            width = 100),
               
-              numericInput("fuel_economy",
+              numericInput("annual",
+                           "Annual km",
+                           value = 15000,
+                           min = 0,
+                           max = 200000,
+                           step = 10000,
+                           width = 100),    
+              
+              numericInput("fuelEconomy",
                            "Fuel Economy (L per 100 km)",
                            value = 7,
                            min = 0,
@@ -75,7 +83,7 @@ ui <- fluidPage(
                            step = 0.1,
                            width = 100),
               
-              numericInput("gasprice",
+              numericInput("gasPrice",
                            "Gas ($ per L)",
                            value = 1.31,
                            min = 0,
@@ -91,13 +99,15 @@ ui <- fluidPage(
               tabsetPanel(
                 tabPanel("Summary", tags$p("Monthly Payment:"), 
                                     verbatimTextOutput("MonthlyPay"),
-                                    tags$p("Total Cost:"),
-                                    verbatimTextOutput("TotalCost"),
                                     tags$p("Borrowing Cost:"),
                                     verbatimTextOutput("BorrowingCost"),
-                                    tags$p("Cost per km:"),
+                                    tags$p("Total Purchase Cost:"),
+                                    verbatimTextOutput("TotalCostExFuel"),
+                                    tags$p("Total Ownership Cost:"),
+                                    verbatimTextOutput("TotalCostInFuel"),
+                                    tags$p("Cost per km (inc. fuel):"),
                                     verbatimTextOutput("PerKMCost"),
-                                    tags$p("Annual Cost:"),
+                                    tags$p("Annual Cost: (inc. fuel)"),
                                     verbatimTextOutput("AnnualCost")
                 ),
                 tabPanel("Loan Table",  tableOutput("PaymentTable"))
@@ -134,15 +144,43 @@ server <- function(input, output) {
            }  
         list (payment = payment)           
    })
+   
+   borrowCost <- reactive ({
+    sum(calcLoan()$payment$'Applied to Interest')    
+   })
+   
+   costPer <- reactive ({
+           gasCost <- ((input$life-input$odometer) / 100 * input$fuelEconomy * input$gasPrice)  
+           totalCost <- (gasCost +  (input$value - borrowCost())) 
+           kmCost <- totalCost / (input$life-input$odometer)
+           annualCost <- totalCost / (input$life / input$annual)
+           
+           list (gasCost = gasCost, totalCost = totalCost, kmCost = kmCost, annualCost = annualCost)
+   })
+   
    output$PaymentTable <- renderTable({
            calcLoan()$payment
    })
    
+   
    output$BorrowingCost <- renderText({
-           BorrowingCost()  
+         -borrowCost()      
    })
-   output$TotalCost <- renderText({
-          
+   
+   output$TotalCostInFuel <- renderText({
+          costPer()$totalCost
+   })
+   
+   output$TotalCostExFuel <- renderText({
+           costPer()$totalCost-costPer()$gasCost
+   })
+   
+   output$PerKMCost <- renderText({
+           costPer()$kmCost
+   })
+   
+   output$AnnualCost <- renderText({
+           costPer()$annualCost
    })
 }
 
