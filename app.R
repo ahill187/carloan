@@ -109,13 +109,18 @@ ui <- fluidPage(
                                     tags$p("Borrowing Cost:"),
                                     verbatimTextOutput("BorrowingCost"),
                                     tags$p("Total Purchase Cost:"),
-                                    verbatimTextOutput("TotalCostExFuel"),
+                                    verbatimTextOutput("purchaseCost"),
+                                    tags$p("Total Fuel Cost:"),
+                                    verbatimTextOutput("fuelCost"),
+                                    tags$p("Total Maintenace & Repair Cost:"),
+                                    verbatimTextOutput("repairCost"),
                                     tags$p("Total Ownership Cost:"),
-                                    verbatimTextOutput("TotalCostInFuel"),
+                                    verbatimTextOutput("ownershipCost"),
                                     tags$p("Annual Ownership Cost"),
                                     verbatimTextOutput("AnnualCost"),
                                     tags$p("Cost per km (inc. fuel):"),
-                                    verbatimTextOutput("PerKMCost")
+                                    verbatimTextOutput("PerKMCost")                       
+                                        
 
                 ),
                 tabPanel("Loan Table",  tableOutput("PaymentTable"))
@@ -307,6 +312,7 @@ server <- function(input, output, session) {
            payment <- data.frame(matrix(NA, nrow = input$term, ncol = 6))
            colnames(payment) <- c("Month", "Starting balance", "Payment", "Applied to Interest", "Applied to Principal", "Remaining Loan Balance")
            starting_balance <- input$price
+
            for (i in 1:input$term) {
                    
                    payment[i,1] <- i
@@ -321,19 +327,32 @@ server <- function(input, output, session) {
         list (payment = payment)           
    })
    
+   calcRepair <- reactive ({
+           odometer <- input$odometer
+           if (odometer >= 100000) {
+                   repairCost <-  (input$life - odometer) * 0.07
+           } else if ((odometer < 100000) & (odometer > 45000)) {
+                   repairCost <- (100000 - odometer) * 0.035 + (input$life - 100000) * 0.07
+           } else if (odometer <= 45000) {
+                   repairCost <- (45000 - odometer) * 0.01 + (100000-45000) * 0.035 + (input$life - 100000) * 0.07
+           }
+           list (repairCost = repairCost)
+   })    
+   
+
    borrowCost <- reactive ({
     sum(calcLoan()$payment$'Applied to Interest')    
    })
    
    costPer <- reactive ({
            gasCost <- ((input$life-input$odometer) / 100 * input$fuelEconomy * input$gasPrice)  
-           totalCost <- (gasCost +  (input$price - borrowCost())) 
+           totalCost <- (gasCost +  (input$price - borrowCost())) + calcRepair()$repairCost
            kmCost <- totalCost / (input$life-input$odometer)
            annualCost <- totalCost / (input$life / input$annual)
-           
            list (gasCost = gasCost, totalCost = totalCost, kmCost = kmCost, annualCost = annualCost)
    })
    
+  
    output$PaymentTable <- renderTable({
            calcLoan()$payment
    })
@@ -343,12 +362,20 @@ server <- function(input, output, session) {
          -borrowCost()      
    })
    
-   output$TotalCostInFuel <- renderText({
-          costPer()$totalCost
+   output$ownershipCost <- renderText({
+          costPer()$totalCost 
    })
    
-   output$TotalCostExFuel <- renderText({
-           costPer()$totalCost-costPer()$gasCost
+   output$purchaseCost <- renderText({
+           costPer()$totalCost - costPer()$gasCost
+   })
+   
+   output$fuelCost <- renderText({
+           costPer()$gasCost
+   })
+   
+   output$repairCost <- renderText({
+           calcRepair()$repairCost
    })
    
    output$PerKMCost <- renderText({
