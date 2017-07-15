@@ -230,17 +230,17 @@ server <- function(input, output, session) {
                    }
            }
            
-           if (input$car == "Prius") {)
+           if (input$car == "Prius") {
                    updateNumericInput(session, "price", value = 36377)
                    updateNumericInput(session, "fuelEconomy", value = 4.2)
                    if (input$term == 60) {
-                           updateNumericInput(session, "rate", value = 0.49)        
+                           updateNumericInput(session, "rate", value = 1.99)        
                    }
                    if (input$term == 72) {
-                           updateNumericInput(session, "rate", value = 0.99)        
+                           updateNumericInput(session, "rate", value = 2.49)        
                    }
                    if (input$term == 84) {
-                           updateNumericInput(session, "rate", value = 0.99)        
+                           updateNumericInput(session, "rate", value = 2.99)        
                    }
            }
            
