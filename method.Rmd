@@ -9,6 +9,6 @@ output: html_document
 
 * Fuel Efficency Values are based on average fuel economies reported by the U.S. Environmental Protection Agency, available from <https://www.fueleconomy.gov/>
 
-* For cash purchases, set the interest rate to zero. Note that some manuafacturers offer cash rebates - or basically charge higher interests that their nominal ones if you finance, depending on how you look at it! Adjust the price accordingly.
+* For cash purchases, set the interest rate to zero. Note that some manuafacturers offer cash rebates - or basically charge higher interests than their nominal ones if you finance, depending on how you look at it! Adjust the price accordingly.
 
 * Life time km is an indicator of how long your vehicle lasts. It is assumed that the vehicle has no cash value at that point. It is also assumed that you keep the vehicle until that point. 
