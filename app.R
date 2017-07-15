@@ -127,7 +127,7 @@ ui <- fluidPage(
                                     verbatimTextOutput("ownershipCost"),
                                     tags$p("Annual Ownership Cost"),
                                     verbatimTextOutput("AnnualCost"),
-                                    tags$p("Cost per km (inc. fuel):"),
+                                    tags$p("Total Cost per km:"),
                                     verbatimTextOutput("PerKMCost")                       
                                         
 
