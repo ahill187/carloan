@@ -28,7 +28,7 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
               selectInput("car", "Choose a car to buy:",
-                          list(`Honda` = c("Civic LX", "Civic LX Honda Sensing", "Civic EX", "Civic EX-t", "Civic Touring"),
+                          list(`Honda` = c("Civic LX", "Civic LX Honda Sensing", "Civic EX", "Civic EX-t", "Civic Touring", "2014 Civic LX"),
                                `Toyota` = c("Corolla LE", "Corolla LE ECO", "Prius", "2014 Camry Hybrid"),
                                `Hyundai` = c("Elantra SE", "Accent LE"),
                                `Custom`  = c("New", "Used")),
@@ -96,8 +96,15 @@ ui <- fluidPage(
                            min = 0,
                            max = 5,
                            step = 0.1,
-                           width = 100)
+                           width = 100),
               
+              numericInput("insurance",
+                           "Insurance (monthly)",
+                           value = 100,
+                           min = 0,
+                           max = 300,
+                           step = 10,
+                           width = 100)
       
       ),
       
@@ -114,6 +121,8 @@ ui <- fluidPage(
                                     verbatimTextOutput("fuelCost"),
                                     tags$p("Total Maintenace & Repair Cost:"),
                                     verbatimTextOutput("repairCost"),
+                                    tags$p("Total Insurance Cost:"),
+                                    verbatimTextOutput("insuranceCost"),
                                     tags$p("Total Ownership Cost:"),
                                     verbatimTextOutput("ownershipCost"),
                                     tags$p("Annual Ownership Cost"),
@@ -192,6 +201,7 @@ server <- function(input, output, session) {
                    }
                    
            }
+           
            if (input$car == "Civic Touring") {
                    updateNumericInput(session, "price", value = 31999)
                    updateNumericInput(session, "fuelEconomy", value = 6.53)
@@ -205,6 +215,18 @@ server <- function(input, output, session) {
                            updateNumericInput(session, "rate", value = 1.99)        
                    }
                    
+           }
+           
+           if (input$car == "2014 Civic LX") {
+                   updateNumericInput(session, "price", value = 17920)
+                   updateNumericInput(session, "fuelEconomy", value = 7.35)
+                   if (input$term == 60) {
+                           updateNumericInput(session, "rate", value = 5)        
+                   }
+                   if (input$term == 72) {
+                           updateNumericInput(session, "rate", value = 6.24)        
+                   }
+
            }
            
            if (input$car == "Corolla LE") {
@@ -346,10 +368,14 @@ server <- function(input, output, session) {
    
    costPer <- reactive ({
            gasCost <- ((input$life-input$odometer) / 100 * input$fuelEconomy * input$gasPrice)  
-           totalCost <- (gasCost +  (input$price - borrowCost())) + calcRepair()$repairCost
+           monthsUsed <- ((input$life - input$odometer) / input$annual) * 12
+           insuranceCost <- input$insurance * monthsUsed
+           
+           totalCost <- (gasCost +  (input$price - borrowCost())) + calcRepair()$repairCost + insuranceCost
            kmCost <- totalCost / (input$life-input$odometer)
            annualCost <- totalCost / (input$life / input$annual)
-           list (gasCost = gasCost, totalCost = totalCost, kmCost = kmCost, annualCost = annualCost)
+
+           list (gasCost = gasCost, totalCost = totalCost, kmCost = kmCost, annualCost = annualCost, insuranceCost = insuranceCost)
    })
    
   
@@ -376,6 +402,10 @@ server <- function(input, output, session) {
    
    output$repairCost <- renderText({
            calcRepair()$repairCost
+   })
+   
+   output$insuranceCost <- renderText({
+           costPer()$insuranceCost
    })
    
    output$PerKMCost <- renderText({
