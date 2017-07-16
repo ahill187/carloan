@@ -459,12 +459,12 @@ server <- function(input, output, session) {
            gasCost <- ((input$life-input$odometer) / 100 * input$fuelEconomy * input$gasPrice)  
            monthsUsed <- ((input$life - input$odometer) / input$annual) * 12
            insuranceCost <- input$insurance * monthsUsed
-           
-           totalCost <- (gasCost +  (input$price - borrowCost())) + calcRepair()$repairCost + insuranceCost
+           purchaseCost <- (input$price - borrowCost())
+           totalCost <- purchaseCost + gasCost + calcRepair()$repairCost + insuranceCost
            kmCost <- totalCost / (input$life-input$odometer)
            annualCost <- totalCost / (input$life / input$annual)
 
-           list (gasCost = gasCost, totalCost = totalCost, kmCost = kmCost, annualCost = annualCost, insuranceCost = insuranceCost)
+           list (purchaseCost = purchaseCost, gasCost = gasCost, totalCost = totalCost, kmCost = kmCost, annualCost = annualCost, insuranceCost = insuranceCost)
    })
    
   
@@ -482,7 +482,7 @@ server <- function(input, output, session) {
    })
    
    output$purchaseCost <- renderText({
-           costPer()$totalCost - costPer()$gasCost
+           costPer()$purchaseCost
    })
    
    output$fuelCost <- renderText({
