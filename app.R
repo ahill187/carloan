@@ -21,7 +21,7 @@ PMT <- function(rate, nper,pv, fv=0, type=0){
 ui <- fluidPage(theme = shinytheme("united"),
    
    # Application title
-   titlePanel("Car Purchase Calculator: Should I buy new or used?"),
+   titlePanel("Canadian Car Purchase Calculator: Is it better to buy new or used?"),
    
    # Sidebar with a slider input for number of bins 
 
@@ -69,7 +69,7 @@ ui <- fluidPage(theme = shinytheme("united"),
                           width = 200),
               
               numericInput("odometer",
-                           "Odometer (km)",
+                           "Current Odometer (km)",
                            value = 0,
                            min = 0,
                            max = 500000,
@@ -77,7 +77,7 @@ ui <- fluidPage(theme = shinytheme("united"),
                            width = 200),
               
               numericInput("life",
-                           "Lifetime km",
+                           "Driving Until? (km)",
                            value = 200000,
                            min = 100000,
                            max = 500000,
@@ -460,7 +460,7 @@ server <- function(input, output, session) {
            monthsUsed <- ((input$life - input$odometer) / input$annual) * 12
            insuranceCost <- input$insurance * monthsUsed
            
-           totalCost <- (gasCost +  (input$price - input$downpayment - borrowCost())) + calcRepair()$repairCost + insuranceCost
+           totalCost <- (gasCost +  (input$price - borrowCost())) + calcRepair()$repairCost + insuranceCost
            kmCost <- totalCost / (input$life-input$odometer)
            annualCost <- totalCost / (input$life / input$annual)
 

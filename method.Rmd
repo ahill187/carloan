@@ -11,4 +11,4 @@ output: html_document
 
 * For cash purchases, set downpayment equal to the entire price of the vehicle. Note that some manuafacturers offer cash rebates - or basically charge higher interests than their nominal ones if you finance, depending on how you look at it! Adjust the price accordingly.
 
-* Life time km is an indicator of how long your vehicle lasts. It is assumed that the vehicle has no cash value at that point. It is also assumed that you keep the vehicle until that point. 
+* Life time km is an indicator of how long your vehicle lasts. It is assumed that the vehicle has no cash value at that point. It is also assumed that you keep the vehicle until that point.
