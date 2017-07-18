@@ -146,6 +146,62 @@ ui <- fluidPage(theme = shinytheme("united"),
                                         
 
                 ),
+                tabPanel("Affordability", numericInput("income",
+                                                       "Gross Monthly Income ($)",
+                                                       value = 3000,
+                                                       min = 0,
+                                                       max = 10000,
+                                                       step = 100,
+                                                       width = 200),
+                         numericInput("rent",
+                                      "Monthly Rent / Mortgage ($)",
+                                      value = 1100,
+                                      min = 0,
+                                      max = 10000,
+                                      step = 100,
+                                      width = 200),
+                         
+                         numericInput("otherDebt",
+                                      "Other Monthly Debt Payments ($)",
+                                      value = 0,
+                                      min = 0,
+                                      max = 10000,
+                                      step = 100,
+                                      width = 200),
+                         
+                         
+                          textOutput("affordability")
+                         
+                         
+                         ),
+                
+                
+                tabPanel("Car vs. Transit", numericInput("transit",
+                                                 "Annual Public Transit ($)",
+                                                 value = 0,
+                                                 min = 0,
+                                                 max = 20000,
+                                                 step = 100,
+                                                 width = 200),
+                         
+                         numericInput("carsharing",
+                                      "Annual Car-Sharing ($)",
+                                      value = 0,
+                                      min = 0,
+                                      max = 20000,
+                                      step = 100,
+                                      width = 200),
+                         
+                         numericInput("convinience",
+                                      "Vale of lost convinience ($)",
+                                      value = 0,
+                                      min = 0,
+                                      max = 100000,
+                                      step = 100,
+                                      width = 200),
+                         textOutput("vsTransit")),
+                
+                
                 tabPanel("Loan Table",  tableOutput("PaymentTable")),
                 tabPanel("Methodology", includeMarkdown("method.Rmd")),
                 tabPanel("Disclaimer",  includeMarkdown("disclaimer.Rmd"))
@@ -463,8 +519,18 @@ server <- function(input, output, session) {
            totalCost <- purchaseCost + gasCost + calcRepair()$repairCost + insuranceCost
            kmCost <- totalCost / (input$life-input$odometer)
            annualCost <- totalCost / (input$life / input$annual)
-
-           list (purchaseCost = purchaseCost, gasCost = gasCost, totalCost = totalCost, kmCost = kmCost, annualCost = annualCost, insuranceCost = insuranceCost)
+           monthlyCost <- annualCost / 12
+           carBudget <- 0.36*input$income - (input$rent + input$otherDebt) 
+           doIafford <- (carBudget > monthlyCost) 
+           
+           if (doIafford) { 
+                   affordMessage <- "You can afford this car :-)"
+           } else {
+                   affordMessage <- "You cannot afford this car :-("
+           }
+  
+           
+           list (purchaseCost = purchaseCost, gasCost = gasCost, totalCost = totalCost, kmCost = kmCost, annualCost = annualCost, insuranceCost = insuranceCost, affordMessage = affordMessage)
    })
    
   
@@ -504,6 +570,14 @@ server <- function(input, output, session) {
    output$AnnualCost <- renderText({
            costPer()$annualCost
    })
+   
+
+   output$affordability <- renderText({
+           costPer()$affordMessage
+   }) 
+ 
+  
+   
 }
 
 # Run the application 
